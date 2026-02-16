@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy New Year 💚</title>
+  <style>
+    :root{
+      --bg1:#051937; --bg2:#004d40; --neon:#2dffb3; --text:#eafff6;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; height:100vh; overflow:hidden; color:var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 20%, rgba(45,255,179,.18), transparent 60%),
+                  radial-gradient(900px 600px at 80% 10%, rgba(0,255,180,.12), transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      display:flex; align-items:center; justify-content:center;
+    }
+    .wrap{
+      width:min(920px, 92vw);
+      padding:28px 22px;
+      text-align:center;
+      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(45,255,179,.25);
+      border-radius: 26px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      position:relative;
+      z-index:2;
+    }
+    .badge{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(45,255,179,.35);
+      background: rgba(45,255,179,.10);
+      letter-spacing:.6px;
+      font-weight:600;
+      margin-bottom:14px;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size: clamp(28px, 4.5vw, 54px);
+      line-height:1.05;
+      text-shadow: 0 0 18px rgba(45,255,179,.22);
+    }
+    .type{
+      margin:10px auto 0;
+      font-size: clamp(16px, 2.2vw, 22px);
+      max-width: 52ch;
+      min-height: 3.2em;
+      opacity:.95;
+    }
+    .cursor{
+      display:inline-block; width:10px;
+      animation: blink .9s steps(2,end) infinite;
+      color: var(--neon);
+    }
+    @keyframes blink{50%{opacity:0}}
+    .btns{margin-top:18px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    button{
+      border:0; cursor:pointer;
+      padding:12px 18px;
+      border-radius: 999px;
+      font-weight:700;
+      font-size: 15px;
+      transition:.2s transform, .2s filter;
+    }
+    .primary{
+      color:#002016;
+      background: linear-gradient(135deg, var(--neon), #00c3ff);
+      box-shadow: 0 10px 26px rgba(45,255,179,.25);
+    }
+    .ghost{
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    button:hover{transform: translateY(-2px); filter: brightness(1.05)}
+    .reveal{
+      margin:18px auto 0;
+      max-width: 58ch;
+      padding: 14px 14px;
+      border-radius: 18px;
+      border:1px dashed rgba(45,255,179,.45);
+      background: rgba(0,0,0,.22);
+      display:none;
+      animation: pop .35s ease-out;
+    }
+    @keyframes pop{from{transform:scale(.96); opacity:.2} to{transform:scale(1); opacity:1}}
+    .reveal strong{color:var(--neon)}
+    .small{opacity:.75; margin-top:8px; font-size: 13px}
+    canvas#fx{position:fixed; inset:0; z-index:1; pointer-events:none}
+    .heart{
+      position:absolute;
+      bottom:-30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      opacity:.9;
+      animation: floatUp 6s linear forwards;
+      filter: drop-shadow(0 0 10px rgba(45,255,179,.25));
+      z-index:0;
+    }
+    @keyframes floatUp{
+      0%{transform: translate(-50%,0) scale(1); opacity:.0}
+      10%{opacity:.9}
+      100%{transform: translate(calc(-50% + var(--dx)), -110vh) scale(1.6); opacity:0}
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fx"></canvas>
+
+  <div class="wrap">
+    <div class="badge">✨ HAPPY NEW YEAR 2026 ✨</div>
+    <h1>Chúc mừng năm mới 💚</h1>
+
+    <div class="type" id="type"></div>
+
+    <div class="btns">
+      <button class="primary" id="open">Mở Lì Xì 💚</button>
+      <button class="ghost" id="more">Thả thính thêm 😌</button>
+    </div>
+
+    <div class="reveal" id="reveal"></div>
+    <div class="small">Tip: bật âm lượng trong đầu — vì câu này “nổ” hơn pháo hoa 😌</div>
+  </div>
+
+<script>
+  // ===== Typewriter =====
+  const lines = [
+    "Năm mới rồi… anh không chúc em giàu, vì anh muốn em giàu tình cảm với anh 😌",
+    "Chúc em ngủ ngon mỗi đêm, và thức dậy thấy tin nhắn của anh đầu tiên 💚",
+    "Nếu năm nay cần một mục tiêu: thì mục tiêu của anh là… được ở cạnh em."
+  ];
+  const typeEl = document.getElementById("type");
+  let iLine=0, iChar=0;
+
+  function typeStep(){
+    const text = lines[iLine];
+    if(iChar <= text.length){
+      typeEl.innerHTML = text.slice(0,iChar) + '<span class="cursor">|</span>';
+      iChar++;
+      setTimeout(typeStep, 28);
+    }else{
+      setTimeout(()=> {
+        iLine = (iLine+1) % lines.length;
+        iChar = 0;
+        typeStep();
+      }, 1400);
+    }
+  }
+  typeStep();
+
+  // ===== Reveal messages =====
+  const revealEl = document.getElementById("reveal");
+  const spicy = [
+    "Lì xì không nhiều… nhưng <strong>thương em</strong> thì anh “đầu tư” cả năm 💚",
+    "Năm mới, anh xin phép <strong>đặt lịch</strong>: mỗi ngày nhớ em một chút—không được hủy 😌",
+    "Em đừng lo tương lai. Vì tương lai của anh… <strong>có em</strong> là đủ.",
+    "Nếu em là năm mới, thì anh muốn <strong>ăn Tết bên em</strong> cả đời."
+  ];
+  const more = [
+    "Anh không cần pháo hoa—chỉ cần em cười là tim anh “bắn” rồi 💥💚",
+    "Em có thể không hoàn hảo… nhưng em hoàn hảo đúng chỗ: <strong>trong lòng anh</strong> 😌",
+    "Năm nay, anh không cầu may. Anh cầu: <strong>em gật đầu</strong>."
+  ];
+  let idx1=0, idx2=0;
+
+  document.getElementById("open").addEventListener("click", () => {
+    revealEl.style.display = "block";
+    revealEl.innerHTML = spicy[idx1++ % spicy.length];
+    burst(180);
+  });
+
+  document.getElementById("more").addEventListener("click", () => {
+    revealEl.style.display = "block";
+    revealEl.innerHTML = more[idx2++ % more.length];
+    burst(90);
+  });
+
+  // ===== Hearts float =====
+  setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = Math.random() > 0.5 ? "💚" : "✨";
+    h.style.left = (Math.random()*100) + "vw";
+    h.style.fontSize = (12 + Math.random()*22) + "px";
+    h.style.setProperty("--dx", (Math.random()*160 - 80) + "px");
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 6500);
+  }, 420);
+
+  // ===== Simple confetti (canvas) =====
+  const canvas = document.getElementById("fx");
+  const ctx = canvas.getContext("2d");
+  let W, H, confetti = [];
+
+  function resize(){
+    W = canvas.width = window.innerWidth * devicePixelRatio;
+    H = canvas.height = window.innerHeight * devicePixelRatio;
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  function burst(n=120){
+    for(let k=0;k<n;k++){
+      confetti.push({
+        x: (window.innerWidth*Math.random())*devicePixelRatio,
+        y: (window.innerHeight*0.35*Math.random())*devicePixelRatio,
+        vx: (Math.random()*6 - 3)*devicePixelRatio,
+        vy: (Math.random()*-8 - 2)*devicePixelRatio,
+        g: (0.20 + Math.random()*0.15)*devicePixelRatio,
+        r: (2 + Math.random()*3)*devicePixelRatio,
+        a: 1
+      });
+    }
+  }
+
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    confetti = confetti.filter(p => p.a > 0.02);
+    for(const p of confetti){
+      p.vy += p.g;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.a *= 0.985;
+
+      ctx.globalAlpha = p.a;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fill(); // default color; browser chooses black if none
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(tick);
+  }
+  tick();
+</script>
+</body>
+</html>
